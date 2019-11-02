@@ -13,8 +13,14 @@ def home():
     return flask.render_template("home.html")
 
 
-@app.route("/", methods=["POST"])
+@app.route("/seo", methods=["POST"])
 def home_form():
+    url = flask.request.form["url"]
+    return flask.redirect(flask.url_for(".seo", url=url))
+
+
+@app.route("/dev/seo", methods=["POST"])
+def home_form2():
     url = flask.request.form["url"]
     return flask.redirect(flask.url_for(".seo", url=url))
 
