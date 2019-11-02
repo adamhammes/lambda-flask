@@ -1,3 +1,60 @@
-<pre>
-{{ json | e }}
-</pre>
+{% extends "layout.html" %}
+{% block content %}
+
+<h1>Seo Checker</h1>
+
+<h2>General Information</h2>
+
+<h3>Title</h3>
+<blockquote>{{ data.title or 'Not found!'}}</blockquote>
+
+<h3>Description</h3>
+<blockquote>{{ data.description or 'Not found!'}}</blockquote>
+
+<h2>Twitter Preview</h2>
+
+<div class="twitter-card__container">
+    <div class="twitter-card__image-container">
+        {% if data.twitter.image %}
+        <img
+            class="twitter-card__image"
+            src="{{ data.twitter.image }}"
+        />
+        {% else %}
+        <img class="twitter-card__image-placeholder" src="https://ton.twimg.com/tfw/assets/news_stroke_v1_78ce5b21fb24a7c7e528d22fc25bd9f9df7f24e2.svg">
+        {% endif %}
+    </div>
+    <div class="twitter-card__content">
+        <h3 class="twitter-card__title">
+            {{ data.twitter.title }}
+        </h3>
+        <p class="twitter-card__description">
+            {{ data.twitter.description }}
+        </p>
+        <span class="twitter-card__destination">
+            {{ data.twitter.url_host }}
+        </span>
+    </div>
+</div>
+
+<h2>Open Graph (Facebook, Slack, etc.) Preview</h2>
+
+<div class="facebook-card__container">
+    {% if data.open_graph.image %}
+    <div class="facebook-card__image-container">
+        <img src="{{ data.open_graph.image }}" class="facebook-card__image">
+    </div>
+    {% endif %}
+    <div class="facebook-card__content">
+        <span class="facebook-card__host">
+            {{ data.open_graph.url_host }}
+        </span>
+        <span class="facebook-card__title">
+            {{ data.open_graph.title }}
+        </span>
+        <span class="facebook-card__description">
+            {{ data.open_graph.description }}
+        </span>
+    </div>
+</div>
+{% endblock %}

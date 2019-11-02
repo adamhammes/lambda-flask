@@ -1,4 +1,5 @@
 import json
+import urllib.parse
 
 import bs4
 import flask
@@ -23,9 +24,16 @@ def get_meta(soup, name, match_on="name"):
     return tag.get("content", None) if tag else None
 
 
-def get_twitter(soup):
+def get_host(url):
+    return urllib.parse.urlparse(url).hostname if url else None
+
+
+def get_twitter(soup, original_url):
     if not get_meta(soup, "twitter:card"):
         return None
+
+    url = get_meta(soup, "twitter:url")
+    url_host = get_host(url) or get_host(original_url)
 
     return {
         "site": get_meta(soup, "twitter:site"),
@@ -33,17 +41,24 @@ def get_twitter(soup):
         "description": get_meta(soup, "twitter:description"),
         "image": get_meta(soup, "twitter:image"),
         "image_alt": get_meta(soup, "twitter:image:alt"),
+        "url": get_meta(soup, "twitter:url"),
+        "url_host": url_host,
     }
 
 
-def get_open_graph(soup):
+def get_open_graph(soup, original_url):
     properties = ["url", "title", "description", "image", "type", "locale"]
-    return {
+
+    data = {
         prop: get_meta(soup, "og:" + prop, match_on="property") for prop in properties
     }
 
+    data["url_host"] = get_host(data["url"]) or get_host(original_url)
+    return data
 
-def get_seo(page):
+
+def get_seo(url):
+    page = requests.get(url).content
     soup = bs4.BeautifulSoup(page, features="html.parser")
     data = {}
     title_tag = soup.title
@@ -53,17 +68,17 @@ def get_seo(page):
     data["description"] = meta_description["content"] if meta_description else ""
 
     data["language"] = soup.html.attrs.get("lang", None)
-    data["twitter"] = get_twitter(soup)
-    data["open_graph"] = get_open_graph(soup)
+    data["twitter"] = get_twitter(soup, url)
+    data["open_graph"] = get_open_graph(soup, url)
     return data
 
 
 @app.route("/seo/<path:url>")
 def seo(url):
-    data = get_seo(requests.get(url).content)
+    data = get_seo(url)
 
     if flask.request.content_type == "application/json":
         return flask.jsonify(data)
 
-    return flask.render_template("seo.html", json=json.dumps(data, indent=4))
+    return flask.render_template("seo.html", data=data)
 
