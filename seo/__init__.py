@@ -4,6 +4,19 @@ import bs4
 import requests
 
 
+def _schemafiy_url(url):
+    """
+    Adds a default scheme of `http` to the url if no scheme is present.
+    Example input/output:
+        hammes.io           ->  http://hammes.io
+        https://google.com  ->  https://google.com (unchanged)
+    """
+    parsed = urllib.parse.urlparse(url)
+    if not parsed.scheme:
+        return "http://" + url
+    return url
+
+
 def _get_meta(soup, name, match_on="name"):
     tag = soup.find("meta", {match_on: name})
     return tag.get("content", None) if tag else None
@@ -44,7 +57,7 @@ def _get_open_graph(soup, original_url):
 
 
 def get_seo(url):
-    page = requests.get(url).content
+    page = requests.get(_schemafiy_url(url)).content
     soup = bs4.BeautifulSoup(page, features="html.parser")
 
     return {
