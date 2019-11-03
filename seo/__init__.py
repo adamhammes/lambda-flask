@@ -39,6 +39,9 @@ def _get_open_graph(soup, original_url):
     }
 
     data["url_host"] = _get_host(data["url"]) or _get_host(original_url)
+    if not data["title"] and soup.title:
+        data["title"] = soup.title.get_text()
+
     return data
 
 
