@@ -49,8 +49,12 @@ main {
   justify-content: center;
 }
 
-.home-page__submit-button {
-  margin-left: 1.5rem;
+.home-page__text-input {
+  margin-right: 1.5rem;
+}
+
+.home-page__text-input, .home-page__submit-button {
+  margin-bottom: 1.5rem;
 }
 
 .twitter-card__container {
