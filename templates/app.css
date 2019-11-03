@@ -29,6 +29,10 @@ input:focus, button:focus {
   border-color: rgb(77, 144, 254);
 }
 
+input[type="text"] {
+  min-width: 25rem;
+}
+
 button {
   cursor: pointer;
 }
