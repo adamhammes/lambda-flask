@@ -4,7 +4,7 @@
   </head>
   <body>
     <h1>Test a page's SEO:</h1>
-    <form action="/dev/seo" method="post">
+    <form action="{{ url_for('home') }}" method="post">
       <input type="text" name="url" />
       <button role="submit">Go!</button>
     </form>
