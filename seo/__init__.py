@@ -14,13 +14,11 @@ def _get_host(url):
 
 
 def _get_twitter(soup, original_url):
-    if not _get_meta(soup, "twitter:card"):
-        return None
-
     url = _get_meta(soup, "twitter:url")
     url_host = _get_host(url) or _get_host(original_url)
 
     return {
+        "card": _get_meta(soup, "twitter:card"),
         "site": _get_meta(soup, "twitter:site"),
         "title": _get_meta(soup, "twitter:title"),
         "description": _get_meta(soup, "twitter:description"),
