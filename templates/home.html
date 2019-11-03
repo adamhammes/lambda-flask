@@ -1,9 +1,32 @@
 {% extends "layout.html" %}
-
+{% block page_title %}
+SEO Checker
+{% endblock %}
+{% block page_description %}
+Designed to be operated by non-technical users, this site collects and present SEO information on a given page.
+{% endblock %}
 {% block content %}
-<h1>Test a page's SEO:</h1>
-<form action="{{ url_for('home') }}" method="post">
-  <input type="text" name="url" />
-  <button role="submit">Go!</button>
+<h1>SEO Checker</h1>
+<p>
+  SEO optimization often involves a lot of tedious steps. Checking that pages
+  have titles and descriptions, verifying that pages look good when shared
+  on social media - it's a lot of manual work.
+</p>
+<p>
+  This site collects and presents that information in one place, and is
+  user-friendly enough to be used even by non-technical users.
+</p>
+<p>
+  <label for="input-url">
+    To get started, enter a link:
+  </label>
+</p>
+<form class="home-page__form" action="{{ url_for('home') }}" method="post">
+  <div>
+    <input id="input-url" class="home-page__text-input" type="text" name="url" placeholder="Url" />
+    <button class="home-page__submit-button" type="submit">
+      Go!
+    </button>
+  </div>
 </form>
 {% endblock %}
