@@ -117,6 +117,9 @@ main {
   font-size: 16px;
   line-height: 20px;
   margin: 5px 0 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .facebook-card__description {
